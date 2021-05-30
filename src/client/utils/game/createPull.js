@@ -15,3 +15,10 @@ function generateSequence() { // тут — сами фигуры
   return tetrominoSequence;
 };
 
+export function getTetrPull(len) {
+  let res = [];
+  for (let i = len; i !== 0; i--) {
+    res = [...res, ...generateSequence()]
+  }
+  return res;
+};
