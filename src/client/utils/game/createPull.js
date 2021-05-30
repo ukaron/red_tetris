@@ -17,8 +17,9 @@ function generateSequence() { // тут — сами фигуры
 
 export function getTetrPull(len) {
   let res = [];
-  for (let i = len; i !== 0; i--) {
+  for (let i = len; res.length < len; i--) {
     res = [...res, ...generateSequence()]
   }
-  return res;
+  return res.slice(0, len);
 };
+

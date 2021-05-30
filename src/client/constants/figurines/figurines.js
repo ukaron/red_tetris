@@ -5,15 +5,15 @@ export const figures = [
       [0, 1, 0],
       [0, 0, 0],
     ],
-    color: 'green',
+    color: 'purple',
     name: 'T',
   },
   {
     coords: [
-      [0, 0, 0, 0],
-      [1, 1, 1, 1],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
+      [0, 1, 0, 0],
     ],
     color: 'cyan',
     name: 'I',
@@ -61,14 +61,5 @@ export const figures = [
     ],
     color: 'red',
     name: 'Z',
-  },
-  {
-    coords: [
-      [0, 1, 0],
-      [1, 1, 1],
-      [0, 0, 0],
-    ],
-    color: 'purple',
-    name: 'T',
   },
 ]
