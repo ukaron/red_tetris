@@ -7,7 +7,6 @@ const Game = ({ common }) => {
   console.log(common);
   return (
     <div>
-      game page
       <PlayField/>
     </div>
   )

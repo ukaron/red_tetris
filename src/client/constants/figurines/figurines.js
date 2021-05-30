@@ -35,11 +35,12 @@ export const J = [
 ];
 
 export const T = [
-  [0, 0, 0],
   [1, 1, 1],
   [0, 1, 0],
+  [0, 0, 0],
 ];
-const colors = {
+
+export const colors = {
   'I': 'cyan',
   'O': 'yellow',
   'T': 'purple',
