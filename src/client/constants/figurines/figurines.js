@@ -1,51 +1,74 @@
-export const O = [
-  [1, 1, 0],
-  [1, 1, 0],
-  [0, 0, 0],
-];
-export const I = [
-  [0, 1, 0, 0],
-  [0, 1, 0, 0],
-  [0, 1, 0, 0],
-  [0, 1, 0, 0],
-];
-
-export const S = [
-  [0, 0, 0],
-  [0, 1, 1],
-  [1, 1, 0],
-];
-
-export const Z = [
-  [0, 0, 0],
-  [1, 1, 0],
-  [0, 1, 1],
-];
-
-export const L = [
-  [1, 0, 0],
-  [1, 0, 0],
-  [1, 1, 0],
-];
-
-export const J = [
-  [0, 0, 1],
-  [0, 0, 1],
-  [0, 1, 1],
-];
-
-export const T = [
-  [1, 1, 1],
-  [0, 1, 0],
-  [0, 0, 0],
-];
-
-export const colors = {
-  'I': 'cyan',
-  'O': 'yellow',
-  'T': 'purple',
-  'S': 'green',
-  'Z': 'red',
-  'J': 'blue',
-  'L': 'orange',
-};
+export const figures = [
+  {
+    coords: [
+      [1, 1, 1],
+      [0, 1, 0],
+      [0, 0, 0],
+    ],
+    color: 'green',
+    name: 'T',
+  },
+  {
+    coords: [
+      [0, 0, 0, 0],
+      [1, 1, 1, 1],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ],
+    color: 'cyan',
+    name: 'I',
+  },
+  {
+    coords: [
+      [1, 0, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: 'orange',
+    name: 'L',
+  },
+  {
+    coords: [
+      [0, 0, 1],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: 'blue',
+    name: 'J',
+  },
+  {
+    coords: [
+      [1, 1],
+      [1, 1],
+    ],
+    color: 'yellow',
+    name: 'O',
+  },
+  {
+    coords: [
+      [0, 1, 1],
+      [1, 1, 0],
+      [0, 0, 0],
+    ],
+    color: 'green',
+    name: 'S',
+  },
+  {
+    coords: [
+      [1, 1, 0],
+      [0, 1, 1],
+      [0, 0, 0],
+    ],
+    color: 'red',
+    name: 'Z',
+  },
+  {
+    coords: [
+      [0, 1, 0],
+      [1, 1, 1],
+      [0, 0, 0],
+    ],
+    color: 'purple',
+    name: 'T',
+  },
+]
