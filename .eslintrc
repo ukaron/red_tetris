@@ -68,7 +68,7 @@
     "block-scoped-var": 1, // treat var statements as if they were block scoped
     "complexity": 0, //specify the maximum cyclomatic complexity allowed in a program
     "consistent-return": 0, //require return statements to either always or never specify values
-    "curly": [1, "all"], //specify curly brace conventions for all control statements
+    "curly": [0, "all"], //specify curly brace conventions for all control statements
     "default-case": 1, //require default case in switch statements
     "dot-location": [1, "property"], //enforces consistent newlines before or after dots
     "dot-notation": [1, { "allowKeywords": true, "allowPattern": "" }], //encourages use of dot notation whenever possible
