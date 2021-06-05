@@ -5,6 +5,7 @@ import { getFiguresPull } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {castDownMove, castLeftMove, castRightMove} from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -17,7 +18,7 @@ export function PlayField() {
   const emptyField = () => generateEmptyField(playFieldSize);
   const randomField = () => generateRandomField(playFieldSize);
 
-  const [playFieldMap, setFieldMap] = useState(generateEmptyField(playFieldSize));
+  const [playFieldMap, setFieldMap] = useState(emptyField);
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
   const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
 
@@ -27,9 +28,6 @@ export function PlayField() {
     setFieldRendered(renderField(newFieldMap, figure.color));
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
-
-  console.log(playFieldMap);
-
 
   const getEmptyFieldHandler = () => setFieldRendered(renderField(emptyField(), defaultBg));
   const getRandomFieldHandler = () => setFieldRendered(renderField(randomField(), defaultBg));
@@ -45,6 +43,19 @@ export function PlayField() {
     return renderFigure(figure);
   });
   const figuresPullRendered = useState(figuresPullField);
+
+  const moveLeftHandler = () => {
+    console.log(playFieldMap)
+    console.log(castLeftMove(playFieldMap));
+  }
+
+  const moveRightHandler = () => {
+    console.log(castRightMove(playFieldMap));
+  }
+
+  const moveDownHandler = () => {
+    console.log(castDownMove(playFieldMap));
+  }
 
   return (
     <Container
@@ -71,13 +82,13 @@ export function PlayField() {
           </Button>
         </div>
         <ButtonGroup>
-          <Button>
+          <Button onClick={moveLeftHandler}>
             Left
           </Button>
-          <Button>
+          <Button onClick={moveRightHandler}>
             Right
           </Button>
-          <Button>
+          <Button onClick={moveDownHandler}>
             Down
           </Button>
         </ButtonGroup>
