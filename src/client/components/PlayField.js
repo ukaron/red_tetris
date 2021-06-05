@@ -5,6 +5,7 @@ import { getFiguresPull } from '../utils/game/createPull';
 import { figureMove, rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {castDownMove, castLeftMove, castRightMove} from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -55,6 +56,20 @@ export function PlayField() {
     return document.removeEventListener('keydown', () => {});
   }, [playFieldMap]);
   console.log(playFieldMap);
+
+  const moveLeftHandler = () => {
+    console.log(playFieldMap)
+    console.log(castLeftMove(playFieldMap));
+  }
+
+  const moveRightHandler = () => {
+    console.log(castRightMove(playFieldMap));
+  }
+
+  const moveDownHandler = () => {
+    console.log(castDownMove(playFieldMap));
+  }
+
   return (
     <Container
       className={'d-flex align-items-center'}
@@ -80,13 +95,13 @@ export function PlayField() {
           </Button>
         </div>
         <ButtonGroup>
-          <Button>
+          <Button onClick={moveLeftHandler}>
             Left
           </Button>
-          <Button>
+          <Button onClick={moveRightHandler}>
             Right
           </Button>
-          <Button>
+          <Button onClick={moveDownHandler}>
             Down
           </Button>
         </ButtonGroup>
