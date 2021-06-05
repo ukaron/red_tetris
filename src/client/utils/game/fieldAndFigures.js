@@ -49,7 +49,8 @@ export const pushFigureOnFieldMap = (figure, playFieldSize, figureStartPosition 
     row.map((col, cI) => {
       const colIndex = cI + 1;
       if (colIndex >= figureStartPosition && coords.length > rI) {
-        newPlayFieldMap[rI][cI] = coords[rI][cI - figureStartPosition];
+        if (coords[rI][cI - figureStartPosition])
+          newPlayFieldMap[rI][cI] = coords[rI][cI - figureStartPosition];
       }
     })
   })

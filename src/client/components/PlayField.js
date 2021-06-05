@@ -28,6 +28,9 @@ export function PlayField() {
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
+  console.log(playFieldMap);
+
+
   const getEmptyFieldHandler = () => setFieldRendered(renderField(emptyField(), defaultBg));
   const getRandomFieldHandler = () => setFieldRendered(renderField(randomField(), defaultBg));
 
