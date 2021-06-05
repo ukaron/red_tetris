@@ -8,11 +8,11 @@ export function castLeftMove(fieldMap) {
       const col = row[j];
       if (col === c) {
         if (!j) { // Overflow check
-          console.log('overflow')
+          console.log('overflow');
           return false;
         }
         if (fieldMap[i][j - 1] === 1) { // Collision check
-          console.log('collision')
+          console.log('collision');
           return false;
         }
       }
@@ -29,11 +29,11 @@ export function castRightMove(fieldMap) {
       const col = row[j];
       if (col === c) {
         if (j === fieldMap[0].length - 1) { // Overflow check
-          console.log('overflow')
+          console.log('overflow');
           return false;
         }
         if (fieldMap[i][j + 1] === 1) { // Collision check
-          console.log('collision')
+          console.log('collision');
           return false;
         }
       }
@@ -50,11 +50,11 @@ export function castDownMove(fieldMap) {
       const col = row[j];
       if (col === c) {
         if (i === fieldMap.length - 1) { // Overflow check
-          console.log('overflow')
+          console.log('overflow');
           return false;
         }
         if (fieldMap[i + 1][j] === 1) { // Collision check
-          console.log('collision')
+          console.log('collision');
           return false;
         }
       }

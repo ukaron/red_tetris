@@ -45,7 +45,6 @@ export function PlayField() {
   const figuresPullRendered = useState(figuresPullField);
 
   const moveLeftHandler = () => {
-    console.log(playFieldMap)
     console.log(castLeftMove(playFieldMap));
   }
 
