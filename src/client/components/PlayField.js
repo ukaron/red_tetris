@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
 import { Col, Row, Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
-import { getRandomInt, getTetrPull } from '../utils/game/createPull';
+import { getTetrPull } from '../utils/game/createPull';
 import { nanoid } from 'nanoid';
 import { rotateFigure } from '../utils/game/rotateFigure';
+import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 
 export function PlayField() {
   const playFieldSize = {
     height: 20,
     width: 10,
   };
-
-  const getZeroOrOne = () => getRandomInt(0, 1);
-  const getZero = () => 0;
-  const generateField = (callBack) => Array.from({ length: playFieldSize.height }).map(() =>
-    Array.from({ length: playFieldSize.width }).map(() => callBack()));
-  const generateRandomField = () => generateField(getZeroOrOne);
-  const generateEmptyField = () => generateField(getZero);
   const figuresWithPosition = figures.map(figure => {
     figure.position = 0;
     return figure;
   });
 
-  const emptyField = generateEmptyField();
-  const [playFieldMap, setPlayFieldMap] = useState(emptyField);
+  const emptyField = () => generateEmptyField(playFieldSize);
+  const randomField = () => generateRandomField(playFieldSize);
+  const [playFieldMap, setPlayFieldMap] = useState(generateEmptyField(playFieldSize));
   const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
 
   const bgFiled = '#90e890';
@@ -61,7 +56,7 @@ export function PlayField() {
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, bgFiled));
   const figureStartPosition = 4;
   const pushFigureOnFieldMap = (figure) => {
-    const newPlayFieldMap = generateEmptyField();
+    const newPlayFieldMap = emptyField();
 
     const coords = figure.coords[figure.position];
     newPlayFieldMap.map((row, rI) => {
@@ -100,14 +95,14 @@ export function PlayField() {
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
         <ButtonGroup className={'my-3'}>
           <Button onClick={() => {
-            const newFieldCoords = generateRandomField();
+            const newFieldCoords = randomField();
             const newFieldRendered = renderField(newFieldCoords, bgFiled);
             setFieldRendered(newFieldRendered);
           }} variant={'outline-success'}>
             Random Fill
           </Button>
           <Button onClick={() => {
-            const newFieldCoords = generateEmptyField();
+            const newFieldCoords = emptyField();
             const newFieldRendered = renderField(newFieldCoords, bgFiled);
             setFieldRendered(newFieldRendered);
           }} variant={'outline-danger'}>
