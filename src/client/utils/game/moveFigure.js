@@ -86,7 +86,6 @@ export const moveDown = (playFieldMap) => {
 }
 
 export const figureMove = (code, playFieldMap) => {
-  console.log(playFieldMap()())
   switch (code) {
   case 'ArrowDown':
     return moveDown(playFieldMap);
