@@ -15,7 +15,7 @@ function generateSequence() { // тут — сами фигуры
   return tetrominoSequence;
 }
 
-export function getTetrPull(len) {
+export function getFiguresPull(len) {
   let res = [];
   for (let i = len; res.length < len; i--) {
     res = [...res, ...generateSequence()]
