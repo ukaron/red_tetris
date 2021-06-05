@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull } from '../utils/game/createPull';
-import { moveDown } from '../utils/game/rotateFigure';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {moveDown} from "../utils/game/moveFigure";
 
 export function PlayField() {
   const playFieldSize = {
@@ -45,17 +45,22 @@ export function PlayField() {
     return renderFigure(figure);
   });
 
-  const getMoveDown = () => {
-    setFieldMap(old => moveDown(old));
-    setFieldRendered(renderField(playFieldMap, currentFigure.color));
-  };
+  const moveLeftHandler = () => {
+  }
+
+  const moveRightHandler = () => {
+  }
+
+  const moveDownHandler = () => {
+    setFieldMap([...moveDown(playFieldMap)]);
+  }
 
   const figuresPullRendered = useState(figuresPullField);
   const callbackKeys = (e) => {
-    e.preventDefault();
     switch (e.code) {
     case 'ArrowDown':
-      return getMoveDown();
+      moveDownHandler();
+      return;
     case 'ArrowUp':
       console.log('up');
       return;
@@ -72,22 +77,6 @@ export function PlayField() {
       return;
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setFieldRendered(renderField(playFieldMap, currentFigure.color));
-    }, 1000)
-  }, []);
-
-  const moveLeftHandler = () => {
-  }
-
-  const moveRightHandler = () => {
-  }
-
-  const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap)]);
-  }
 
   useEffect(() => {
     setFieldRendered(renderField(playFieldMap, currentFigure.color))
