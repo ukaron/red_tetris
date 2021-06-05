@@ -11,18 +11,13 @@ export function PlayField() {
     height: 20,
     width: 10,
   };
+
+  const defaultBg = '#90e890';
+  const cellSize = '30px';
   const figuresWithPosition = figures.map(figure => {
     figure.position = 0;
     return figure;
   });
-
-  const emptyField = () => generateEmptyField(playFieldSize);
-  const randomField = () => generateRandomField(playFieldSize);
-  const [playFieldMap, setPlayFieldMap] = useState(generateEmptyField(playFieldSize));
-  const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
-
-  const bgFiled = '#90e890';
-  const cellSize = '30px';
 
   const renderField = (fieldMap, color) => fieldMap.map((v, i) =>
     <Row className={'shadow shadow-sm'} key={`row-${i}${nanoid()}`}>
@@ -51,9 +46,16 @@ export function PlayField() {
     >
       {renderField(figure.coords[figure.position], figure.color)}
     </Container>
-  )
+  );
 
-  const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, bgFiled));
+  const emptyField = () => generateEmptyField(playFieldSize);
+  const randomField = () => generateRandomField(playFieldSize);
+  const [playFieldMap, setPlayFieldMap] = useState(generateEmptyField(playFieldSize));
+  const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
+  const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
+  const getEmptyField = () => setFieldRendered(renderField(emptyField(), defaultBg));
+  const getRandomField = () => setFieldRendered(renderField(randomField(), defaultBg));
+
   const figureStartPosition = 4;
   const pushFigureOnFieldMap = (figure) => {
     const newPlayFieldMap = emptyField();
@@ -94,18 +96,10 @@ export function PlayField() {
     >
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
         <ButtonGroup className={'my-3'}>
-          <Button onClick={() => {
-            const newFieldCoords = randomField();
-            const newFieldRendered = renderField(newFieldCoords, bgFiled);
-            setFieldRendered(newFieldRendered);
-          }} variant={'outline-success'}>
+          <Button onClick={getRandomField} variant={'outline-success'}>
             Random Fill
           </Button>
-          <Button onClick={() => {
-            const newFieldCoords = emptyField();
-            const newFieldRendered = renderField(newFieldCoords, bgFiled);
-            setFieldRendered(newFieldRendered);
-          }} variant={'outline-danger'}>
+          <Button onClick={getEmptyField} variant={'outline-danger'}>
             Clear
           </Button>
         </ButtonGroup>
