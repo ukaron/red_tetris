@@ -45,20 +45,41 @@ export function PlayField() {
     return renderFigure(figure);
   });
 
-  const getMoveDown = () => {
+  const moveDownHandler = () => {
+    setFieldMap(old => moveDown(old));
+    setFieldRendered(renderField(playFieldMap, currentFigure.color));
+  };
+
+  const moveUpHandler = () => {
     setFieldMap(old => moveDown(old));
     setFieldRendered(renderField(playFieldMap, currentFigure.color));
   };
 
   const figuresPullRendered = useState(figuresPullField);
+
+  const moveLeftHandler = () => {
+  }
+
+  const moveRightHandler = () => {
+  }
+
+  useEffect(() => {
+    setFieldRendered(renderField(playFieldMap, currentFigure.color))
+  }, [playFieldMap]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFieldRendered(renderField(playFieldMap, currentFigure.color));
+    }, 1000)
+  }, []);
+
   const callbackKeys = (e) => {
     e.preventDefault();
     switch (e.code) {
     case 'ArrowDown':
-      return getMoveDown();
+      return moveDownHandler();
     case 'ArrowUp':
-      console.log('up');
-      return;
+      return moveUpHandler();
     case 'ArrowLeft':
       console.log('left');
       return;
@@ -72,26 +93,6 @@ export function PlayField() {
       return;
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      setFieldRendered(renderField(playFieldMap, currentFigure.color));
-    }, 1000)
-  }, []);
-
-  const moveLeftHandler = () => {
-  }
-
-  const moveRightHandler = () => {
-  }
-
-  const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap)]);
-  }
-
-  useEffect(() => {
-    setFieldRendered(renderField(playFieldMap, currentFigure.color))
-  }, [playFieldMap]);
 
   return (
     <Container
