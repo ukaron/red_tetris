@@ -3,7 +3,7 @@ import { Col, Row, Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
 import { getRandomInt, getTetrPull } from '../utils/game/createPull';
 import { nanoid } from 'nanoid';
-import { rotateFigure } from '../utils/game/rotateFigures';
+import { rotateFigure } from '../utils/game/rotateFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -24,7 +24,7 @@ export function PlayField() {
 
   const emptyField = generateEmptyField();
   const [playFieldMap, setPlayFieldMap] = useState(emptyField);
-  const [allFigures, setAllFigures] = useState(figuresWithPosition);
+  const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
 
   const bgFiled = '#90e890';
   const cellSize = '30px';
@@ -78,11 +78,11 @@ export function PlayField() {
   const figuresOnClickHandler = (figure) => {
     pushFigureOnFieldMap(figure);
   };
-  const rotateAllFiguresHandler = () => {
-    const newFig = allFigures.map(item => rotateFigure(item));
-    setAllFigures(newFig);
+  const rotateAllFigureTypesHandler = () => {
+    const newFig = figureTypes.map(item => rotateFigure(item));
+    setFigureTypes(newFig);
   }
-  const figuresRendered = allFigures.map(figure => renderFigure(figure, figuresOnClickHandler));
+  const figuresRendered = figureTypes.map(figure => renderFigure(figure, figuresOnClickHandler));
 
   const figuresPullCount = 20;
   const figuresPull = getTetrPull(figuresPullCount);
@@ -120,7 +120,7 @@ export function PlayField() {
       </Container>
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
         <div className={'text-center my-3'}>
-          <Button onClick={rotateAllFiguresHandler} variant={'outline-warning'}>
+          <Button onClick={rotateAllFigureTypesHandler} variant={'outline-warning'}>
             Rotate All
           </Button>
         </div>

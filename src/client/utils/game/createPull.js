@@ -13,7 +13,7 @@ function generateSequence() { // тут — сами фигуры
     tetrominoSequence.push(name);
   }
   return tetrominoSequence;
-};
+}
 
 export function getTetrPull(len) {
   let res = [];
@@ -21,5 +21,5 @@ export function getTetrPull(len) {
     res = [...res, ...generateSequence()]
   }
   return res.slice(0, len);
-};
+}
 
