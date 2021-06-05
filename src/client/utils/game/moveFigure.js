@@ -61,4 +61,7 @@ export function castDownMove(fieldMap) {
     }
   }
   return canMove;
+  fieldMap?.map((row) => {
+    console.log(row)
+  })
 }
