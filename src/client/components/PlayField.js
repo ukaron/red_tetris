@@ -22,38 +22,24 @@ export function PlayField() {
     return figure;
   });
 
-  const [playFieldMap, setPlayFieldMap] = useState(generateEmptyField());
+  const emptyField = generateEmptyField();
+  const [playFieldMap, setPlayFieldMap] = useState(emptyField);
   const [allFigures, setAllFigures] = useState(figuresWithPosition);
 
-  const figureStartPosition = 4;
-  const pushFigureOnFieldMap = (figure) => {
-    const newPlayFieldMap = generateEmptyField();
-
-    const coords = figure.coords[figure.position];
-    newPlayFieldMap.map((row, rI) => {
-      row.map((col, cI) => {
-        const colIndex = cI + 1;
-        if (colIndex >= figureStartPosition && coords.length > rI) {
-          newPlayFieldMap[rI][cI] = coords[rI][cI - figureStartPosition];
-        }
-      })
-    })
-    setPlayFieldMap([...newPlayFieldMap]);
-  }
-
   const bgFiled = '#90e890';
-  const cellSize = 'auto';
+  const cellSize = '30px';
 
   const renderField = (fieldMap, color) => fieldMap.map((v, i) =>
     <Row className={'shadow shadow-sm'} key={`row-${i}${nanoid()}`}>
       {v.map((h, i) => (
         <Col
-          className={`text-center d-flex justify-content-center p-3
+          className={`text-center d-flex justify-content-center
         align-items-center border border-light`}
           key={`col-${i}-${color}${nanoid()}`}
           style={{
             height: cellSize,
             width: cellSize,
+            padding: '10px',
             color: `${h ? color : 'white'}`,
             backgroundColor: `${h ? color : 'white'}`,
           }}
@@ -72,7 +58,23 @@ export function PlayField() {
     </Container>
   )
 
-  const fieldRendered = renderField(playFieldMap, bgFiled);
+  const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, bgFiled));
+  const figureStartPosition = 4;
+  const pushFigureOnFieldMap = (figure) => {
+    const newPlayFieldMap = generateEmptyField();
+
+    const coords = figure.coords[figure.position];
+    newPlayFieldMap.map((row, rI) => {
+      row.map((col, cI) => {
+        const colIndex = cI + 1;
+        if (colIndex >= figureStartPosition && coords.length > rI) {
+          newPlayFieldMap[rI][cI] = coords[rI][cI - figureStartPosition];
+        }
+      })
+    })
+    setFieldRendered(renderField(newPlayFieldMap, figure.color));
+  }
+
   const figuresOnClickHandler = (figure) => {
     pushFigureOnFieldMap(figure);
   };
@@ -93,14 +95,22 @@ export function PlayField() {
   return (
     <Container
       className={'d-flex align-items-center'}
-      fluid style={{ height: '100vh', display: 'grid' }}
+      fluid style={{ minHeight: '100vh', display: 'grid' }}
     >
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
         <ButtonGroup className={'my-3'}>
-          <Button onClick={() => setPlayFieldMap(generateRandomField)} variant={'outline-success'}>
+          <Button onClick={() => {
+            const newFieldCoords = generateRandomField();
+            const newFieldRendered = renderField(newFieldCoords, bgFiled);
+            setFieldRendered(newFieldRendered);
+          }} variant={'outline-success'}>
             Random Fill
           </Button>
-          <Button onClick={() => setPlayFieldMap(generateEmptyField)} variant={'outline-danger'}>
+          <Button onClick={() => {
+            const newFieldCoords = generateEmptyField();
+            const newFieldRendered = renderField(newFieldCoords, bgFiled);
+            setFieldRendered(newFieldRendered);
+          }} variant={'outline-danger'}>
             Clear
           </Button>
         </ButtonGroup>
@@ -118,7 +128,7 @@ export function PlayField() {
       </Container>
       <Container
         className={'align-items-center justify-content-center'}
-        style={{ display: 'grid', height: '100%', overflow: 'auto' }}
+        style={{ display: 'grid', height: '100vh', overflow: 'auto' }}
       >
         <div className={'text-center'}>
           Pull - {figuresPullCount}
