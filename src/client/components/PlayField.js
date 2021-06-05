@@ -83,9 +83,7 @@ export function PlayField() {
     <Container
       className={'d-flex align-items-center'}
       fluid
-      onKeyDown={e => {
-        callbackKeys(e)
-      }}
+      onKeyDown={callbackKeys}
       style={{ minHeight: '100vh', display: 'grid' }}
       tabIndex='0'
     >

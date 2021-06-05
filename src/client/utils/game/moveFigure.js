@@ -84,24 +84,3 @@ export const moveDown = (playFieldMap) => {
   }
   return newPlayField;
 }
-
-export const figureMove = (code, playFieldMap) => {
-  switch (code) {
-  case 'ArrowDown':
-    return moveDown(playFieldMap);
-  case 'ArrowUp':
-    console.log('up');
-    return playFieldMap;
-  case 'ArrowLeft':
-    console.log('left');
-    return playFieldMap;
-  case 'ArrowRight':
-    console.log('right');
-    return playFieldMap;
-  case 'Space':
-    console.log('Space');
-    return playFieldMap;
-  default:
-    return playFieldMap;
-  }
-}
