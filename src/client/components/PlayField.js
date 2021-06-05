@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull } from '../utils/game/createPull';
-import { figureMove, rotateFigure } from '../utils/game/rotateFigure';
+import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
-import {castDownMove, castLeftMove, castRightMove} from '../utils/game/moveFigure';
+import { figureMove, moveDown } from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -37,9 +37,6 @@ export function PlayField() {
   const rotateAllFigureTypesHandler = () => {
     const newFig = figureTypes.map(item => rotateFigure(item));
     setFigureTypes(newFig);
-  }
-  const getPlayField = () => {
-    return playFieldMap;
   };
   const figuresPull = getFiguresPull(figuresPullCount); // рандомный пул
 
@@ -48,26 +45,20 @@ export function PlayField() {
     return renderFigure(figure);
   });
   const figuresPullRendered = useState(figuresPullField);
-  useEffect(() => {
-    document.addEventListener('keydown', (e) => {
-      figureMove(e.code, playFieldMap, setFieldMap);
-      setFieldRendered(renderField(playFieldMap, currentFigure.color));
-    });
-    return document.removeEventListener('keydown', () => {});
-  }, [playFieldMap]);
-  console.log(playFieldMap);
 
   const moveLeftHandler = () => {
-    console.log(castLeftMove(playFieldMap));
   }
 
   const moveRightHandler = () => {
-    console.log(castRightMove(playFieldMap));
   }
 
   const moveDownHandler = () => {
-    console.log(castDownMove(playFieldMap));
+    setFieldMap([...moveDown(playFieldMap)]);
   }
+
+  useEffect(() => {
+    setFieldRendered(renderField(playFieldMap, currentFigure.color))
+  }, [playFieldMap]);
 
   return (
     <Container

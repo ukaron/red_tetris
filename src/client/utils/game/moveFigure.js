@@ -1,6 +1,6 @@
 import { c } from '../../constants/figurines/figurines';
 
-export function castLeftMove(fieldMap) {
+export function castMoveLeft(fieldMap) {
   const canMove = true;
   for (let i = 0; i < fieldMap.length; i++) {
     const row = fieldMap[i];
@@ -21,7 +21,7 @@ export function castLeftMove(fieldMap) {
   return canMove;
 }
 
-export function castRightMove(fieldMap) {
+export function castMoveRight(fieldMap) {
   const canMove = true;
   for (let i = 0; i < fieldMap.length; i++) {
     const row = fieldMap[i];
@@ -42,7 +42,7 @@ export function castRightMove(fieldMap) {
   return canMove;
 }
 
-export function castDownMove(fieldMap) {
+export function castMoveDown(fieldMap) {
   const canMove = true;
   for (let i = 0; i < fieldMap.length; i++) {
     const row = fieldMap[i];
@@ -61,7 +61,48 @@ export function castDownMove(fieldMap) {
     }
   }
   return canMove;
-  fieldMap?.map((row) => {
-    console.log(row)
-  })
+}
+
+const placeFigureOnStash = (playFieldMap) => {
+  return playFieldMap.map(row => row.map(col => {
+    if (col === c)
+      return 1;
+    return col;
+  }))
+}
+
+export const moveDown = (playFieldMap) => {
+  if (!castMoveDown(playFieldMap)) {
+    return placeFigureOnStash(playFieldMap);
+  }
+  const newPlayField = playFieldMap;
+  for (let i = playFieldMap.length - 1; i >= 0; i--) {
+    for (let j = playFieldMap[0].length - 1; j >= 0; j--) {
+      if (newPlayField[i][j] === c) newPlayField[i + 1][j] = c;
+      newPlayField[i][j] = 0;
+    }
+  }
+  return newPlayField;
+}
+
+export const figureMove = (code, playFieldMap) => {
+  console.log(playFieldMap()())
+  switch (code) {
+  case 'ArrowDown':
+    return moveDown(playFieldMap);
+  case 'ArrowUp':
+    console.log('up');
+    return playFieldMap;
+  case 'ArrowLeft':
+    console.log('left');
+    return playFieldMap;
+  case 'ArrowRight':
+    console.log('right');
+    return playFieldMap;
+  case 'Space':
+    console.log('Space');
+    return playFieldMap;
+  default:
+    return playFieldMap;
+  }
 }
