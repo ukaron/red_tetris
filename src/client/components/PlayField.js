@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull } from '../utils/game/createPull';
+import { moveDown } from '../utils/game/rotateFigure';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
-import { figureMove, moveDown } from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -44,7 +44,40 @@ export function PlayField() {
     const figure = figures.find(f => f.name === figureName);
     return renderFigure(figure);
   });
+
+  const getMoveDown = () => {
+    setFieldMap(old => moveDown(old));
+    setFieldRendered(renderField(playFieldMap, currentFigure.color));
+  };
+
   const figuresPullRendered = useState(figuresPullField);
+  const callbackKeys = (e) => {
+    e.preventDefault();
+    switch (e.code) {
+    case 'ArrowDown':
+      return getMoveDown();
+    case 'ArrowUp':
+      console.log('up');
+      return;
+    case 'ArrowLeft':
+      console.log('left');
+      return;
+    case 'ArrowRight':
+      console.log('right');
+      return;
+    case 'Space':
+      console.log('Space');
+      return;
+    default:
+      return;
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFieldRendered(renderField(playFieldMap, currentFigure.color));
+    }, 1000)
+  }, []);
 
   const moveLeftHandler = () => {
   }
@@ -63,7 +96,12 @@ export function PlayField() {
   return (
     <Container
       className={'d-flex align-items-center'}
-      fluid style={{ minHeight: '100vh', display: 'grid' }}
+      fluid
+      onKeyDown={e => {
+        callbackKeys(e)
+      }}
+      style={{ minHeight: '100vh', display: 'grid' }}
+      tabIndex='0'
     >
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
         <ButtonGroup className={'my-3'}>
