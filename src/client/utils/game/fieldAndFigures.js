@@ -7,7 +7,7 @@ import { figures } from '../../constants/figurines/figurines';
 const defaultFigureStartPosition = 4;
 const defaultBgColor = '90e890';
 
-export const renderField = (fieldMap, color = defaultBgColor) => fieldMap.map((v, i) => {
+export const renderField = (fieldMap, color = defaultBgColor) => fieldMap?.map((v, i) => {
   const cellSize = '30px';
   return (
     <Row className={'shadow shadow-sm'} key={`row-${i}${nanoid()}`}>
@@ -45,7 +45,7 @@ export const pushFigureOnFieldMap = (figure, playFieldSize, figureStartPosition 
   const newPlayFieldMap = generateEmptyField(playFieldSize);
 
   const coords = figure.coords[figure.position];
-  newPlayFieldMap.map((row, rI) => {
+  newPlayFieldMap?.map((row, rI) => {
     row.map((col, cI) => {
       const colIndex = cI + 1;
       if (colIndex >= figureStartPosition && coords.length > rI) {

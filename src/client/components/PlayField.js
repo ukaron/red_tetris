@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Col, Row, Container, Button, ButtonGroup } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull } from '../utils/game/createPull';
-import { rotateFigure } from '../utils/game/rotateFigure';
+import { figureMove, rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
 
@@ -17,19 +17,18 @@ export function PlayField() {
   const emptyField = () => generateEmptyField(playFieldSize);
   const randomField = () => generateRandomField(playFieldSize);
 
-  const [playFieldMap, setFieldMap] = useState(generateEmptyField(playFieldSize));
+  const [playFieldMap, setFieldMap] = useState(emptyField);
+  const [currentFigure, setCurrentFigure] = useState('');
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
   const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
 
   const pushFigureOnFieldMapHandler = (figure) => {
+    setCurrentFigure(figure);
     const newFieldMap = pushFigureOnFieldMap(figure, playFieldSize);
     setFieldMap([...newFieldMap]);
     setFieldRendered(renderField(newFieldMap, figure.color));
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
-
-  console.log(playFieldMap);
-
 
   const getEmptyFieldHandler = () => setFieldRendered(renderField(emptyField(), defaultBg));
   const getRandomFieldHandler = () => setFieldRendered(renderField(randomField(), defaultBg));
@@ -38,14 +37,24 @@ export function PlayField() {
     const newFig = figureTypes.map(item => rotateFigure(item));
     setFigureTypes(newFig);
   }
+  const getPlayField = () => {
+    return playFieldMap;
+  };
+  const figuresPull = getFiguresPull(figuresPullCount); // рандомный пул
 
-  const figuresPull = getFiguresPull(figuresPullCount);
-  const figuresPullField = figuresPull.map(figureName => {
+  const figuresPullField = figuresPull.map(figureName => { // отрендеренный пул
     const figure = figures.find(f => f.name === figureName);
     return renderFigure(figure);
   });
   const figuresPullRendered = useState(figuresPullField);
-
+  useEffect(() => {
+    document.addEventListener('keydown', (e) => {
+      figureMove(e.code, playFieldMap, setFieldMap);
+      setFieldRendered(renderField(playFieldMap, currentFigure.color));
+    });
+    return document.removeEventListener('keydown', () => {});
+  }, [playFieldMap]);
+  console.log(playFieldMap);
   return (
     <Container
       className={'d-flex align-items-center'}
