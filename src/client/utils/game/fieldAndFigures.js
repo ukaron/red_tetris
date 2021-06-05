@@ -1,8 +1,8 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { nanoid } from 'nanoid';
 import React from 'react';
-import {generateEmptyField, generateRandomField} from './generateField';
-import {figures} from "../../constants/figurines/figurines";
+import { generateEmptyField } from './generateField';
+import { figures } from '../../constants/figurines/figurines';
 
 const defaultFigureStartPosition = 4;
 const defaultBgColor = '90e890';
@@ -34,7 +34,7 @@ export const renderFigure = (figure, onClick = null) => (
   <Container
     className={'align-items-center justify-content-center my-2'}
     key={`figure-${figure.name}-${nanoid()}`}
-    onClick={() => onClick(figure)}
+    onClick={() => (onClick ? onClick(figure) : '')}
     style={{ display: 'grid', cursor: onClick ? 'pointer' : 'initial' }}
   >
     {renderField(figure.coords[figure.position], figure.color)}
@@ -53,7 +53,7 @@ export const pushFigureOnFieldMap = (figure, playFieldSize, figureStartPosition 
       }
     })
   })
-  return renderField(newPlayFieldMap, figure.color)
+  return newPlayFieldMap;
 };
 
 export const figuresWithPosition = figures.map(figure => {

@@ -17,12 +17,14 @@ export function PlayField() {
   const emptyField = () => generateEmptyField(playFieldSize);
   const randomField = () => generateRandomField(playFieldSize);
 
-  const [playFieldMap] = useState(generateEmptyField(playFieldSize));
+  const [playFieldMap, setFieldMap] = useState(generateEmptyField(playFieldSize));
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
   const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
 
   const pushFigureOnFieldMapHandler = (figure) => {
-    setFieldRendered(pushFigureOnFieldMap(figure, playFieldSize));
+    const newFieldMap = pushFigureOnFieldMap(figure, playFieldSize);
+    setFieldMap([...newFieldMap]);
+    setFieldRendered(renderField(newFieldMap, figure.color));
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
@@ -65,6 +67,17 @@ export function PlayField() {
             Rotate All
           </Button>
         </div>
+        <ButtonGroup>
+          <Button>
+            Left
+          </Button>
+          <Button>
+            Right
+          </Button>
+          <Button>
+            Down
+          </Button>
+        </ButtonGroup>
         {figureTypesRendered}
       </Container>
       <Container
