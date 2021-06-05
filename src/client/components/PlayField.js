@@ -14,23 +14,25 @@ export function PlayField() {
 
   const defaultBg = '#90e890';
   const figuresPullCount = 20;
-
   const emptyField = () => generateEmptyField(playFieldSize);
   const randomField = () => generateRandomField(playFieldSize);
+
   const [playFieldMap] = useState(generateEmptyField(playFieldSize));
-  const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
+  const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
+
+  const pushFigureOnFieldMapHandler = (figure) => {
+    setFieldRendered(pushFigureOnFieldMap(figure, playFieldSize));
+  };
+  const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
+
   const getEmptyFieldHandler = () => setFieldRendered(renderField(emptyField(), defaultBg));
   const getRandomFieldHandler = () => setFieldRendered(renderField(randomField(), defaultBg));
 
-  const figuresOnClickHandler = (figure) => {
-    setFieldRendered(pushFigureOnFieldMap(figure));
-  };
   const rotateAllFigureTypesHandler = () => {
     const newFig = figureTypes.map(item => rotateFigure(item));
     setFigureTypes(newFig);
   }
-  const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, figuresOnClickHandler));
 
   const figuresPull = getFiguresPull(figuresPullCount);
   const figuresPullField = figuresPull.map(figureName => {

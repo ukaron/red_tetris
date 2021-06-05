@@ -1,7 +1,7 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import { nanoid } from 'nanoid';
 import React from 'react';
-import { generateRandomField } from './generateField';
+import {generateEmptyField, generateRandomField} from './generateField';
 import {figures} from "../../constants/figurines/figurines";
 
 const defaultFigureStartPosition = 4;
@@ -41,8 +41,8 @@ export const renderFigure = (figure, onClick = null) => (
   </Container>
 );
 
-export const pushFigureOnFieldMap = (figure, figureStartPosition = defaultFigureStartPosition) => {
-  const newPlayFieldMap = generateRandomField();
+export const pushFigureOnFieldMap = (figure, playFieldSize, figureStartPosition = defaultFigureStartPosition) => {
+  const newPlayFieldMap = generateEmptyField(playFieldSize);
 
   const coords = figure.coords[figure.position];
   newPlayFieldMap.map((row, rI) => {
