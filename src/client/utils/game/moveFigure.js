@@ -78,8 +78,12 @@ export const moveDown = (playFieldMap) => {
   const newPlayField = playFieldMap;
   for (let i = playFieldMap.length - 1; i >= 0; i--) {
     for (let j = playFieldMap[0].length - 1; j >= 0; j--) {
-      if (newPlayField[i][j] === c) newPlayField[i + 1][j] = c;
-      newPlayField[i][j] = 0;
+      if (newPlayField[i][j] === c){
+        newPlayField[i + 1][j] = c;
+        newPlayField[i][j] = 0;
+      }
+      if (!newPlayField[i][j])
+        newPlayField[i][j] = 0;
     }
   }
   return newPlayField;
