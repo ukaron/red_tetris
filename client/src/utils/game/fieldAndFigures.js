@@ -45,9 +45,16 @@ export const renderFigure = (figure, onClick = null) => (
 );
 
 export const pushFigureOnFieldMap = (figure, playFieldMap, figureStartPosition = defaultFigureStartPosition) => {
+  playFieldMap = cleanupFieldMap(playFieldMap);
+  playFieldMap = pushFigure(figure, playFieldMap, figureStartPosition);
+  window.dispatchEvent(figureSpawned);
+  return playFieldMap;
+};
+
+function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureStartPosition) {
   const coords = figure.coords[figure.position];
-  playFieldMap?.map((row, rI) => {
-    row.map((col, cI) => {
+  playFieldMap?.forEach((row, rI) => {
+    row.forEach((col, cI) => {
       const colIndex = cI + 1;
       if (colIndex >= figureStartPosition && coords.length > rI) {
         if (coords[rI][cI - figureStartPosition])
@@ -55,9 +62,18 @@ export const pushFigureOnFieldMap = (figure, playFieldMap, figureStartPosition =
       }
     })
   })
-  window.dispatchEvent(figureSpawned);
   return playFieldMap;
-};
+}
+
+function cleanupFieldMap(playFieldMap) {
+  playFieldMap.forEach((row, rI) => {
+    row.forEach((col, cI) => {
+      if (col === c)
+        playFieldMap[rI][cI] = 0;
+    })
+  })
+  return playFieldMap;
+}
 
 export const figuresWithPosition = figures.map(figure => {
   figure.position = 0;
