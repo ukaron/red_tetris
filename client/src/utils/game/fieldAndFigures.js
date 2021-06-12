@@ -55,7 +55,7 @@ function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureSta
   const coords = figure.coords[figure.position];
   let figureUsefulRowCount = 0;
   figure.coords[figure.position].forEach((r) => {
-    const res = r.find(f => f);
+    const res = r.find(f => f === c);
     if (res)
       figureUsefulRowCount = figureUsefulRowCount + 1;
   });
