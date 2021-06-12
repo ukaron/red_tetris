@@ -4,7 +4,13 @@ import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull, getRandomInt } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
-import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {
+  defaultFigureStartPosition,
+  figuresWithPosition,
+  pushFigureOnFieldMap,
+  renderField,
+  renderFigure,
+} from '../utils/game/fieldAndFigures';
 import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
 
 export function PlayField() {
@@ -27,6 +33,7 @@ export function PlayField() {
   );
 
   const pushFigureOnFieldMapHandler = (figure) => {
+    figure.location = defaultFigureStartPosition;
     setCurrentFigure(figure);
     setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, currentFigure.location)]);
   };
@@ -79,7 +86,6 @@ export function PlayField() {
       return;
     }
   };
-  console.log(currentFigure);
   return (
     <Container
       className={'d-flex align-items-center'}

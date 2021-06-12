@@ -118,7 +118,7 @@ export const moveDown = (playFieldMap, figureName, setCurrentFigure) => {
   return newPlayField;
 }
 
-export const moveRight = (playFieldMap) => {
+export const moveRight = (playFieldMap, setCurrentFigure) => {
   if (!castMoveRight(playFieldMap)) {
     return playFieldMap;
   }
@@ -133,10 +133,12 @@ export const moveRight = (playFieldMap) => {
         newPlayField[i][j] = 0;
     }
   }
+  setCurrentFigure(figure => ({ ...figure, location: { ...figure.location, x: figure.location.x + 1}}))
+
   return newPlayField;
 }
 
-export const moveLeft = (playFieldMap) => {
+export const moveLeft = (playFieldMap, setCurrentFigure) => {
   if (!castMoveLeft(playFieldMap)) {
     return playFieldMap;
   }
@@ -151,6 +153,7 @@ export const moveLeft = (playFieldMap) => {
         newPlayField[i][j] = 0;
     }
   }
+  setCurrentFigure(figure => ({ ...figure, location: { ...figure.location, x: figure.location.x - 1}}))
   return newPlayField;
 }
 
