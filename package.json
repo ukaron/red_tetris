@@ -1,7 +1,8 @@
 {
-  "name": "react-backend",
-  "version": "0.0.0",
-  "private": true,
+  "name": "red_tetris",
+  "version": "1.0.0",
+  "author": "asshole42",
+  "license": "MIT",
   "scripts": {
     "start": "PORT=3001 node ./app.js"
   },
