@@ -1,4 +1,4 @@
-export const c = 2;
+export const c = 1;
 
 export const figures = [
   {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
-import { getFiguresPull } from '../utils/game/createPull';
+import { getFiguresPull, getRandomInt } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
-import { moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
+import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -15,24 +15,25 @@ export function PlayField() {
 
   const defaultBg = '#90e890';
   const figuresPullCount = 20;
+  const figureMoveDownInterval = 1000;
   const emptyField = () => generateEmptyField(playFieldSize);
   const randomField = () => generateRandomField(playFieldSize);
 
   const [playFieldMap, setFieldMap] = useState(emptyField);
-  const [currentFigure, setCurrentFigure] = useState('');
   const [fieldRendered, setFieldRendered] = useState(renderField(playFieldMap, defaultBg));
   const [figureTypes, setFigureTypes] = useState(figuresWithPosition);
+  const [currentFigure, setCurrentFigure] = useState(
+    figuresWithPosition[getRandomInt(0, figuresWithPosition.length - 1)]
+  );
 
   const pushFigureOnFieldMapHandler = (figure) => {
     setCurrentFigure(figure);
-    const newFieldMap = pushFigureOnFieldMap(figure, playFieldSize);
-    setFieldMap([...newFieldMap]);
-    setFieldRendered(renderField(newFieldMap, figure.color));
+    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap)]);
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
-  const getEmptyFieldHandler = () => setFieldRendered(renderField(emptyField(), defaultBg));
-  const getRandomFieldHandler = () => setFieldRendered(renderField(randomField(), defaultBg));
+  const getEmptyFieldHandler = () => setFieldMap(emptyField());
+  const getRandomFieldHandler = () => setFieldMap(randomField());
 
   const rotateAllFigureTypesHandler = () => {
     const newFig = figureTypes.map(item => rotateFigure(item));
@@ -46,7 +47,7 @@ export function PlayField() {
   });
 
   const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap)]);
+    setFieldMap([...moveDown(playFieldMap, currentFigure.name)]);
   }
 
   const figuresPullRendered = useState(figuresPullField);
