@@ -35,7 +35,7 @@ export function PlayField() {
   const pushFigureOnFieldMapHandler = (figure) => {
     figure.location = defaultFigureStartPosition;
     setCurrentFigure(figure);
-    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, currentFigure.location)]);
+    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, defaultFigureStartPosition)]);
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
