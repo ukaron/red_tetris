@@ -1,4 +1,7 @@
-import { c } from '../../constants/figurines/figurines';
+import { c, figures } from '../../constants/figurines/figurines';
+
+const figuresNames = figures.map(el => el.name);
+export const figureStacked = new CustomEvent('figure-stuck');
 
 export function castMoveLeft(fieldMap) {
   const canMove = true;
@@ -11,7 +14,8 @@ export function castMoveLeft(fieldMap) {
           console.log('overflow');
           return false;
         }
-        if (fieldMap[i][j - 1] === 1) { // Collision check
+        const nextRowElement = fieldMap[i][j - 1];
+        if (figuresNames.includes(nextRowElement)) { // Collision check
           console.log('collision');
           return false;
         }
@@ -32,7 +36,8 @@ export function castMoveRight(fieldMap) {
           console.log('overflow');
           return false;
         }
-        if (fieldMap[i][j + 1] === 1) { // Collision check
+        const nextRowElement = fieldMap[i][j + 1];
+        if (figuresNames.includes(nextRowElement)) { // Collision check
           console.log('collision');
           return false;
         }
@@ -53,7 +58,8 @@ export function castMoveDown(fieldMap) {
           console.log('overflow');
           return false;
         }
-        if (fieldMap[i + 1][j] === 1) { // Collision check
+        const nextRowElement = fieldMap[i + 1][j];
+        if (figuresNames.includes(nextRowElement)) { // Collision check
           console.log('collision');
           return false;
         }
@@ -63,22 +69,21 @@ export function castMoveDown(fieldMap) {
   return canMove;
 }
 
-const placeFigureOnStash = (playFieldMap) => {
-  return playFieldMap.map(row => row.map(col => {
-    if (col === c)
-      return 1;
-    return col;
-  }))
-}
+const placeFigureOnStash = (playFieldMap, figureName) => playFieldMap.map(row => row.map(col => {
+  if (col === c)
+    return figureName;
+  return col;
+}))
 
-export const moveDown = (playFieldMap) => {
+export const moveDown = (playFieldMap, figureName) => {
   if (!castMoveDown(playFieldMap)) {
-    return placeFigureOnStash(playFieldMap);
+    window.dispatchEvent(figureStacked);
+    return placeFigureOnStash(playFieldMap, figureName);
   }
   const newPlayField = playFieldMap;
   for (let i = playFieldMap.length - 1; i >= 0; i--) {
     for (let j = playFieldMap[0].length - 1; j >= 0; j--) {
-      if (newPlayField[i][j] === c){
+      if (newPlayField[i][j] === c) {
         newPlayField[i + 1][j] = c;
         newPlayField[i][j] = 0;
       }
