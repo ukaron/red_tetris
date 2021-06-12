@@ -4,7 +4,7 @@ import React from 'react';
 import { c, figures } from '../../constants/figurines/figurines';
 
 export const figureSpawned = new CustomEvent('figure-spawned');
-const defaultFigureStartPosition = 4;
+const defaultFigureStartPosition = {x: 4, y: 0};
 const defaultBgColor = '90e890';
 
 export const renderField = (fieldMap, color = defaultBgColor) => fieldMap?.map((v, i) => {
@@ -53,12 +53,20 @@ export const pushFigureOnFieldMap = (figure, playFieldMap, figureStartPosition =
 
 function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureStartPosition) {
   const coords = figure.coords[figure.position];
+  let figureUsefulRowCount = 0;
+  figure.coords[figure.position].forEach((r) => {
+    const res = r.find(f => f);
+    if (res)
+      figureUsefulRowCount = figureUsefulRowCount + 1;
+  });
   playFieldMap?.forEach((row, rI) => {
     row.forEach((col, cI) => {
       const colIndex = cI + 1;
-      if (colIndex >= figureStartPosition && coords.length > rI) {
-        if (coords[rI][cI - figureStartPosition])
-          playFieldMap[rI][cI] = coords[rI][cI - figureStartPosition];
+      if (colIndex >= figureStartPosition.x && coords.length > rI) {
+        if (playFieldMap.length < figureStartPosition.y + figureUsefulRowCount)
+          figureStartPosition.y = playFieldMap.length - figureUsefulRowCount;
+        if (coords[rI][cI - figureStartPosition.x])
+          playFieldMap[rI + figureStartPosition.y][cI] = coords[rI][cI - figureStartPosition.x];
       }
     })
   })
