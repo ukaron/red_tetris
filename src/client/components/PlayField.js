@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Button, ButtonGroup } from 'react-bootstrap';
 import { figures } from '../constants/figurines/figurines';
-import {getFiguresPull, getRandomInt} from '../utils/game/createPull';
+import { getFiguresPull, getRandomInt } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
 import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
-import {figureStacked, moveDown} from '../utils/game/moveFigure';
+import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
 
 export function PlayField() {
   const playFieldSize = {
@@ -53,9 +53,11 @@ export function PlayField() {
   const figuresPullRendered = useState(figuresPullField);
 
   const moveLeftHandler = () => {
+    setFieldMap([...moveLeft(playFieldMap)]);
   }
 
   const moveRightHandler = () => {
+    setFieldMap([...moveRight(playFieldMap)]);
   }
 
   useEffect(() => {
@@ -67,11 +69,9 @@ export function PlayField() {
     case 'ArrowDown':
       return moveDownHandler();
     case 'ArrowLeft':
-      console.log('left');
-      return;
+      return moveLeftHandler();
     case 'ArrowRight':
-      console.log('right');
-      return;
+      return moveRightHandler();
     case 'Space':
       console.log('Space');
       return;
