@@ -85,5 +85,6 @@ function cleanupFieldMap(playFieldMap) {
 
 export const figuresWithPosition = figures.map(figure => {
   figure.position = 0;
+  figure.location = defaultFigureStartPosition;
   return figure;
 });

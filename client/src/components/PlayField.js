@@ -28,7 +28,7 @@ export function PlayField() {
 
   const pushFigureOnFieldMapHandler = (figure) => {
     setCurrentFigure(figure);
-    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap)]);
+    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, currentFigure.location)]);
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
@@ -47,17 +47,17 @@ export function PlayField() {
   });
 
   const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap, currentFigure.name)]);
+    setFieldMap([...moveDown(playFieldMap, currentFigure.name, setCurrentFigure)]);
   }
 
   const figuresPullRendered = useState(figuresPullField);
 
   const moveLeftHandler = () => {
-    setFieldMap([...moveLeft(playFieldMap)]);
+    setFieldMap([...moveLeft(playFieldMap, setCurrentFigure)]);
   }
 
   const moveRightHandler = () => {
-    setFieldMap([...moveRight(playFieldMap)]);
+    setFieldMap([...moveRight(playFieldMap, setCurrentFigure)]);
   }
 
   useEffect(() => {
@@ -79,7 +79,7 @@ export function PlayField() {
       return;
     }
   };
-
+  console.log(currentFigure);
   return (
     <Container
       className={'d-flex align-items-center'}
