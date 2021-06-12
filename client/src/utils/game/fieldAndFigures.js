@@ -4,7 +4,7 @@ import React from 'react';
 import { c, figures } from '../../constants/figurines/figurines';
 
 export const figureSpawned = new CustomEvent('figure-spawned');
-const defaultFigureStartPosition = {x: 4, y: 0};
+export const defaultFigureStartPosition = {x: 4, y: 0};
 const defaultBgColor = '90e890';
 
 export const renderField = (fieldMap, color = defaultBgColor) => fieldMap?.map((v, i) => {
@@ -85,5 +85,6 @@ function cleanupFieldMap(playFieldMap) {
 
 export const figuresWithPosition = figures.map(figure => {
   figure.position = 0;
+  figure.location = defaultFigureStartPosition;
   return figure;
 });

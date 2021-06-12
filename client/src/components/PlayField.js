@@ -4,7 +4,13 @@ import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull, getRandomInt } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
-import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {
+  defaultFigureStartPosition,
+  figuresWithPosition,
+  pushFigureOnFieldMap,
+  renderField,
+  renderFigure,
+} from '../utils/game/fieldAndFigures';
 import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
 
 export function PlayField() {
@@ -27,8 +33,9 @@ export function PlayField() {
   );
 
   const pushFigureOnFieldMapHandler = (figure) => {
+    figure.location = defaultFigureStartPosition;
     setCurrentFigure(figure);
-    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap)]);
+    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, currentFigure.location)]);
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
@@ -47,17 +54,17 @@ export function PlayField() {
   });
 
   const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap, currentFigure.name)]);
+    setFieldMap([...moveDown(playFieldMap, currentFigure.name, setCurrentFigure)]);
   }
 
   const figuresPullRendered = useState(figuresPullField);
 
   const moveLeftHandler = () => {
-    setFieldMap([...moveLeft(playFieldMap)]);
+    setFieldMap([...moveLeft(playFieldMap, setCurrentFigure)]);
   }
 
   const moveRightHandler = () => {
-    setFieldMap([...moveRight(playFieldMap)]);
+    setFieldMap([...moveRight(playFieldMap, setCurrentFigure)]);
   }
 
   useEffect(() => {
@@ -79,7 +86,6 @@ export function PlayField() {
       return;
     }
   };
-
   return (
     <Container
       className={'d-flex align-items-center'}
