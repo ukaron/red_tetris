@@ -72,6 +72,10 @@ export function PlayField() {
       setFieldMap([...moveRight(currentFigure, playFieldMap)]);
   }
 
+  const moveUpHandler = () => {
+    setFieldMap([...rotateFigure(playFieldMap, currentFigure, setCurrentFigure)]);
+  }
+
   useEffect(() => {
     setFieldRendered(renderField(playFieldMap, currentFigure.color))
   }, [playFieldMap, currentFigure.color]);
@@ -94,6 +98,8 @@ export function PlayField() {
           return moveLeftHandler();
         case 'ArrowRight':
           return moveRightHandler();
+        case 'ArrowUp':
+          return moveUpHandler();
         case 'Space':
           console.log('Space');
           return;
