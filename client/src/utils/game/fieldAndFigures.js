@@ -15,17 +15,19 @@ export const renderField = (fieldMap, color = defaultBgColor) => fieldMap?.map((
         const stashFigure = figures.find((el) => el.name === h);
         return (
           <Col
-            className={`text-center d-flex justify-content-center
+            className={`figure_peace text-center d-flex justify-content-center
       align-items-center border border-light`}
             key={`col-${i}-${color}${nanoid()}`}
             style={{
               height: cellSize,
               width: cellSize,
               padding: '10px',
-              color: `${stashFigure ? stashFigure.color : h === c ? color : 'white'}`,
-              backgroundColor: `${stashFigure ? stashFigure.color :  h === c ? color : 'white'}`,
+              color: `${stashFigure ? stashFigure.color : h === c ? color : h === -1 ? 'gray' : 'white'}`,
+              backgroundColor: `${stashFigure ? stashFigure.color :  h === c ? color : h === -1 ? 'gray' : 'white'}`,
             }}
-          />
+          >
+            {h}
+          </Col>
         )
       })}
     </Row>
@@ -51,7 +53,9 @@ export const pushFigureOnFieldMap = (figure, playFieldMap, figureStartPosition =
   return playFieldMap;
 };
 
-function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureStartPosition) {
+export function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureStartPosition) {
+  playFieldMap = cleanupFieldMap(playFieldMap, true);
+  playFieldMap = pushFigureProject(figure, playFieldMap);
   const coords = figure.coords[figure.position];
   let figureUsefulRowCount = 0;
   figure.coords[figure.position].forEach((r) => {
@@ -73,10 +77,33 @@ function pushFigure(figure, playFieldMap, figureStartPosition = defaultFigureSta
   return playFieldMap;
 }
 
-function cleanupFieldMap(playFieldMap) {
+export function pushFigureProject(figure, playFieldMap) {
+  let figureUsefulRowCount = 0;
+  figure.coords[figure.position].forEach((row) => {
+    const res = row.find(f => f === c);
+    if (res)
+      figureUsefulRowCount = figureUsefulRowCount + 1;
+  });
+  playFieldMap?.forEach((row, rI) => {
+    if (rI >= figure.location.y) {
+      row.forEach((col, cI) => {
+        if (cI >= figure.location.x && cI < figure.coords[figure.position][0].length + figure.location.x){
+          if (!col){
+            playFieldMap[rI][cI] = -1;
+          }
+        }
+      })
+    }
+  })
+  return playFieldMap;
+}
+
+export function cleanupFieldMap(playFieldMap, onlyProject=false) {
   playFieldMap.forEach((row, rI) => {
     row.forEach((col, cI) => {
-      if (col === c)
+      if (col === c && !onlyProject)
+        playFieldMap[rI][cI] = 0;
+      if (col === -1 && onlyProject)
         playFieldMap[rI][cI] = 0;
     })
   })

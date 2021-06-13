@@ -1,5 +1,12 @@
 import { c, figures } from '../../constants/figurines/figurines';
 import { rotateFigure } from './rotateFigure';
+import {
+  cleanupFieldMap,
+  defaultFigureStartPosition,
+  pushFigure,
+  pushFigureOnFieldMap,
+  pushFigureProject
+} from "./fieldAndFigures";
 
 const figuresNames = figures.map(el => el.name);
 export const figureStacked = new CustomEvent('figure-stuck');
@@ -98,12 +105,14 @@ const placeFigureOnStash = (playFieldMap, figureName) => playFieldMap.map(row =>
   return col;
 }))
 
-export const moveDown = (playFieldMap, figureName, setCurrentFigure) => {
+export const moveDown = (figure, playFieldMap) => {
   if (!castMoveDown(playFieldMap)) {
+    figure.location = defaultFigureStartPosition;
+    cleanupFieldMap(playFieldMap, true);
     window.dispatchEvent(figureStacked);
-    return placeFigureOnStash(playFieldMap, figureName);
+    return placeFigureOnStash(playFieldMap, figure.name);
   }
-  const newPlayField = playFieldMap;
+  let newPlayField = playFieldMap;
   for (let i = playFieldMap.length - 1; i >= 0; i--) {
     for (let j = playFieldMap[0].length - 1; j >= 0; j--) {
       if (newPlayField[i][j] === c) {
@@ -114,15 +123,15 @@ export const moveDown = (playFieldMap, figureName, setCurrentFigure) => {
         newPlayField[i][j] = 0;
     }
   }
-  setCurrentFigure(figure => ({ ...figure, location: { ...figure.location, y: figure.location.y + 1}}))
-  return newPlayField;
+  figure.location = {x: figure.location.x, y: figure.location.y + 1};
+  return pushFigure(figure, playFieldMap, figure.location);
 }
 
-export const moveRight = (playFieldMap, setCurrentFigure) => {
+export const moveRight = (figure, playFieldMap) => {
   if (!castMoveRight(playFieldMap)) {
     return playFieldMap;
   }
-  const newPlayField = playFieldMap;
+  let newPlayField = playFieldMap;
   for (let i = playFieldMap.length - 1; i >= 0; i--) {
     for (let j = playFieldMap[0].length - 1; j >= 0; j--) {
       if (newPlayField[i][j] === c){
@@ -133,16 +142,15 @@ export const moveRight = (playFieldMap, setCurrentFigure) => {
         newPlayField[i][j] = 0;
     }
   }
-  setCurrentFigure(figure => ({ ...figure, location: { ...figure.location, x: figure.location.x + 1}}))
-
-  return newPlayField;
+  figure.location = {x: figure.location.x + 1, y: figure.location.y};
+  return pushFigure(figure, playFieldMap, figure.location);
 }
 
-export const moveLeft = (playFieldMap, setCurrentFigure) => {
+export const moveLeft = (figure, playFieldMap) => {
   if (!castMoveLeft(playFieldMap)) {
     return playFieldMap;
   }
-  const newPlayField = playFieldMap;
+  let newPlayField = playFieldMap;
   for (let i = 0; i < playFieldMap.length; i++) {
     for (let j = 0; j < playFieldMap[0].length; j++) {
       if (newPlayField[i][j] === c){
@@ -153,8 +161,8 @@ export const moveLeft = (playFieldMap, setCurrentFigure) => {
         newPlayField[i][j] = 0;
     }
   }
-  setCurrentFigure(figure => ({ ...figure, location: { ...figure.location, x: figure.location.x - 1}}))
-  return newPlayField;
+  figure.location = {x: figure.location.x - 1, y: figure.location.y};
+  return pushFigure(figure, playFieldMap, figure.location);
 }
 
 export const getRotateFigure = (playFieldMap) => {

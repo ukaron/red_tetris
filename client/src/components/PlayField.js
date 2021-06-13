@@ -12,6 +12,7 @@ import {
   renderFigure,
 } from '../utils/game/fieldAndFigures';
 import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
+import '../styles/PlayField/main.css';
 
 export function PlayField() {
   const playFieldSize = {
@@ -19,6 +20,7 @@ export function PlayField() {
     width: 10,
   };
 
+  const [moveLocked, setMoveLocked] = useState(true);
   const defaultBg = '#90e890';
   const figuresPullCount = 20;
   const figureMoveDownInterval = 1000;
@@ -53,37 +55,51 @@ export function PlayField() {
     return renderFigure(figure);
   });
 
-  const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap, currentFigure.name, setCurrentFigure)]);
-  }
-
   const figuresPullRendered = useState(figuresPullField);
 
+  const moveDownHandler = () => {
+    if (!moveLocked)
+      setFieldMap([...moveDown(currentFigure, playFieldMap)]);
+  }
+
   const moveLeftHandler = () => {
-    setFieldMap([...moveLeft(playFieldMap, setCurrentFigure)]);
+    if (!moveLocked)
+      setFieldMap([...moveLeft(currentFigure, playFieldMap)]);
   }
 
   const moveRightHandler = () => {
-    setFieldMap([...moveRight(playFieldMap, setCurrentFigure)]);
+    if (!moveLocked)
+      setFieldMap([...moveRight(currentFigure, playFieldMap)]);
   }
 
   useEffect(() => {
     setFieldRendered(renderField(playFieldMap, currentFigure.color))
   }, [playFieldMap, currentFigure.color]);
 
+  useEffect(() => {
+    window.addEventListener('figure-spawned', () => {
+      setMoveLocked(false);
+    });
+    window.addEventListener('figure-stuck', () => {
+      setMoveLocked(true);
+    })
+  }, [])
+
   const callbackKeys = (e) => {
-    switch (e.code) {
-    case 'ArrowDown':
-      return moveDownHandler();
-    case 'ArrowLeft':
-      return moveLeftHandler();
-    case 'ArrowRight':
-      return moveRightHandler();
-    case 'Space':
-      console.log('Space');
-      return;
-    default:
-      return;
+    if (!moveLocked) {
+      switch (e.code) {
+        case 'ArrowDown':
+          return moveDownHandler();
+        case 'ArrowLeft':
+          return moveLeftHandler();
+        case 'ArrowRight':
+          return moveRightHandler();
+        case 'Space':
+          console.log('Space');
+          return;
+        default:
+          return;
+      }
     }
   };
   return (
