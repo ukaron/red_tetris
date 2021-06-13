@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,25 +12,18 @@ const Welcome = () => {
     let history = useHistory();
     const dispatch = useDispatch();
     const [name, setName] = useState('');
-
-    const [response, setResponse] = useState("");
     const [socket, setSocket] = useState(null);
 
     const logIn = () => {
         if (name) {
-            history.push('/lobby');
             dispatch(userLogIn(name));
-        }
+            socket?.emit('new user', name)
+            history.push('/lobby');
+        };
     }
     useEffect(() => {
         setSocket(io(ENDPOINT));
     }, []);
-
-    useEffect(() => {
-        socket?.on("FromAPI", data => {
-            setResponse(data);
-        });
-    }, [socket]);
 
 	return (
         <Card style={{ width: '35rem' }} className='conteiner'>

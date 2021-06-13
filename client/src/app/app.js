@@ -18,12 +18,9 @@ const App = ({ common }) => (
     <Header/>
     <Router>
         <Switch>
-            {! common.name && <Route component={Welcome} exact path='/'/>}
-            { common.name && <>
-                    <Route component={Lobby} path='/lobby'/>
-                    <Route component={Game} path='/game:room'/>
-                </>
-            }
+            <Route component={Welcome} exact path='/'/>
+            <Route component={Lobby} path='/lobby'/>
+            <Route component={Game} path='/game:room'/>
         </Switch>
     </Router>
   </div>

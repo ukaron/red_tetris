@@ -1,7 +1,8 @@
-import React, { useState, useDispatch } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { CommonSelector } from '../selectors/common';
-import { Card, Button, FormControl, Row, Col } from 'react-bootstrap'
+import { Card, Button, FormControl, Row, Col } from 'react-bootstrap';
+import { io } from "socket.io-client";
 
 const lobbies = [{
         id: '1',
@@ -21,11 +22,29 @@ const lobbies = [{
     },
 ];
 
-const Lobby = () => {
+const Lobby = ({ common }) => {
     const [lobbyName, setLobbyName] = useState('');
+    const ENDPOINT = "http://localhost:3001";
+
+    const [socket, setSocket] = useState(null);
+    const [lobbies, setLobbies] = useState([]);
+
     const createLobby = () => {
-        console.log(lobbyName);
+        socket?.emit('new lobby', lobbyName, common.name);
     }
+
+    const joinLobby = (currentLobbyName) => {
+        socket?.emit('join', currentLobbyName, common.name);
+    }
+
+    socket?.on("update lobby list", lobbies => {
+        setLobbies(lobbies);
+    });
+
+    useEffect(() => {
+        setSocket(io(ENDPOINT));
+    }, []);
+
 	return (
         <div>
             <Card style={{ width: '35rem' }} className='conteiner first-card'>
@@ -45,11 +64,19 @@ const Lobby = () => {
                         <Row key={lobby.id}>
                             <hr/>
                             <Col className='mt-2'>
-                                <Card.Subtitle className="mb-2">{lobby.lobbyName}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2">{lobby.name}</Card.Subtitle>
                                 <Card.Subtitle className="mb-2">{lobby.users.length}/8 slots</Card.Subtitle>
                             </Col>
                             <Col>
-                                <Button size="lg" variant="warning">JOIN</Button>
+                            { lobby.users[0] === common.name && 
+                                <Button size="lg" variant="warning" onClick={() => joinLobby(lobby.name)}>START</Button>
+                            }
+                            {! lobby.users.includes(common.name) && 
+                                <Button size="lg" variant="warning" onClick={() => joinLobby(lobby.name)}>JOIN</Button>
+                            }
+                            { lobby.users.includes(common.name) && 
+                                <Button size="lg" variant="danger">LEAVE</Button>
+                            }
                             </Col>
                         </Row>
                     ))}
