@@ -33,7 +33,6 @@ export function PlayField() {
   const [currentFigure, setCurrentFigure] = useState(
     figuresWithPosition[getRandomInt(0, figuresWithPosition.length - 1)]
   );
-
   const pushFigureOnFieldMapHandler = (figure) => {
     figure.location = defaultFigureStartPosition;
     setCurrentFigure(figure);
@@ -58,13 +57,15 @@ export function PlayField() {
   const figuresPullRendered = useState(figuresPullField);
 
   const moveDownHandler = () => {
-    if (!moveLocked)
+    if (!moveLocked) {
       setFieldMap([...moveDown(currentFigure, playFieldMap)]);
+    }
   }
 
   const moveLeftHandler = () => {
     if (!moveLocked)
-      setFieldMap([...moveLeft(currentFigure, playFieldMap)]);
+    console.log(currentFigure);
+    setFieldMap([...moveLeft(currentFigure, playFieldMap)]);
   }
 
   const moveRightHandler = () => {
@@ -73,8 +74,13 @@ export function PlayField() {
   }
 
   const moveUpHandler = () => {
+
     setFieldMap([...rotateFigure(playFieldMap, currentFigure, setCurrentFigure)]);
   }
+
+  useEffect(() => {
+    setFieldMap([...pushFigureOnFieldMap(currentFigure, playFieldMap, currentFigure.location)]);
+  }, [currentFigure]);
 
   useEffect(() => {
     setFieldRendered(renderField(playFieldMap, currentFigure.color))
@@ -90,6 +96,7 @@ export function PlayField() {
   }, [])
 
   const callbackKeys = (e) => {
+    e.preventDefault();
     if (!moveLocked) {
       switch (e.code) {
         case 'ArrowDown':
@@ -108,6 +115,7 @@ export function PlayField() {
       }
     }
   };
+
   return (
     <Container
       className={'d-flex align-items-center'}

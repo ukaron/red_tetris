@@ -4,8 +4,6 @@ import {
   cleanupFieldMap,
   defaultFigureStartPosition,
   pushFigure,
-  pushFigureOnFieldMap,
-  pushFigureProject
 } from "./fieldAndFigures";
 
 const figuresNames = figures.map(el => el.name);
@@ -155,10 +153,10 @@ export const moveLeft = (figure, playFieldMap) => {
     for (let j = 0; j < playFieldMap[0].length; j++) {
       if (newPlayField[i][j] === c){
         newPlayField[i][j-1] = c;
-        newPlayField[i][j] = 0;
+        newPlayField[i][j] = -1;
       }
       if (!newPlayField[i][j])
-        newPlayField[i][j] = 0;
+        newPlayField[i][j] = -1;
     }
   }
   figure.location = {x: figure.location.x - 1, y: figure.location.y};
