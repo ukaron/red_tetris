@@ -9,7 +9,7 @@ const Welcome = ({ common }) => {
     const [socket, setSocket] = useState(null);
 
     const sayAaaa = () => {
-        socket?.on("From", data => {
+        socket && socket.on("From", data => {
             console.log(data);
         });
     }
@@ -17,7 +17,7 @@ const Welcome = ({ common }) => {
         setSocket(io(ENDPOINT));
     }, []);
     useEffect(() => {
-        socket?.on("FromAPI", data => {
+        socket && socket.on("FromAPI", data => {
             setResponse(data);
         });
     }, [socket]);
