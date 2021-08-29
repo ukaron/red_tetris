@@ -138,20 +138,15 @@ export function PlayField() {
         </div>
       </Container>
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
-        <div className={'text-center my-3'}>
-          <Button onClick={rotateAllFigureTypesHandler} variant={'outline-warning'}>
-            Rotate All
-          </Button>
-        </div>
         <ButtonGroup>
           <Button onClick={moveLeftHandler}>
             Left
           </Button>
-          <Button onClick={moveRightHandler}>
-            Right
-          </Button>
           <Button onClick={moveDownHandler}>
             Down
+          </Button>
+          <Button onClick={moveRightHandler}>
+            Right
           </Button>
         </ButtonGroup>
         {figureTypesRendered}

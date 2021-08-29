@@ -84,12 +84,29 @@ export function pushFigureProject(figure, playFieldMap) {
         if (res)
             figureUsefulRowCount = figureUsefulRowCount + 1;
     });
+    let figureUsefulCol = new Set();
+    figure.coords[figure.position].forEach((row) => {
+        row.map((col, i) => {
+            if (col === c)
+                figureUsefulCol.add(i)
+        })
+    });
+    let rowBreakPoint = playFieldMap.length - 1;
+    let rowLastAccess = 0;
+    let figureWidth = figure.coords[figure.position][0].length;
     playFieldMap.forEach((row, rI) => {
-        if (rI >= figure.location.y) {
+        if (rI >= figure.location.y && rowBreakPoint >= rowLastAccess) {
             row.forEach((col, cI) => {
-                if (cI >= figure.location.x && cI < figure.coords[figure.position][0].length + figure.location.x) {
-                    if (!col) {
-                        playFieldMap[rI][cI] = -1;
+                if (cI >= figure.location.x && cI < figureWidth + figure.location.x) {
+                    if (rI !== figure.location.y) { // Exclude First Row
+                        if (!col) {
+                            if (figureUsefulCol.has(cI - figure.location.x)){
+                                playFieldMap[rI][cI] = -1;
+                            }
+                        }
+                        if (col) {
+                            rowBreakPoint = rowBreakPoint -1;
+                        }
                     }
                 }
             })
