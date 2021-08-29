@@ -8,7 +8,7 @@ import {
   pushFigureProject
 } from "./fieldAndFigures";
 
-const figuresNames = figures.map(el => el.name);
+export const figuresNames = figures.map(el => el.name);
 export const figureStacked = new CustomEvent('figure-stuck');
 
 export function castMoveLeft(fieldMap) {

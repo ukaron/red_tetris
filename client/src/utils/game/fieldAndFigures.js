@@ -2,6 +2,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { nanoid } from 'nanoid';
 import React from 'react';
 import { c, figures } from '../../constants/figurines/figurines';
+import {castMoveDown, figuresNames} from "./moveFigure";
 
 export const figureSpawned = new CustomEvent('figure-spawned');
 export const defaultFigureStartPosition = {x: 4, y: 0};
@@ -79,15 +80,25 @@ export function pushFigure(figure, playFieldMap, figureStartPosition = defaultFi
 
 export function pushFigureProject(figure, playFieldMap) {
   let figureUsefulRowCount = 0;
-  figure.coords[figure.position].forEach((row) => {
+  let figuresUsefulColCount = [];
+  figure.coords[figure.position].forEach((row, i) => {
+    // let r = row.filter(f => f).length;
+    // figuresUsefulColCount = r >= figuresUsefulColCount ? r : figuresUsefulColCount;
+    row.forEach((col, j) => {
+      if (col === c){
+        figuresUsefulColCount = new Set([...figuresUsefulColCount, j])
+      }
+    })
     const res = row.find(f => f === c);
     if (res)
       figureUsefulRowCount = figureUsefulRowCount + 1;
   });
+  figuresUsefulColCount = figuresUsefulColCount.size;
+
   playFieldMap?.forEach((row, rI) => {
     if (rI >= figure.location.y) {
       row.forEach((col, cI) => {
-        if (cI >= figure.location.x && cI < figure.coords[figure.position][0].length + figure.location.x){
+        if (cI >= figure.location.x && cI < figuresUsefulColCount + figure.location.x){
           if (!col){
             playFieldMap[rI][cI] = -1;
           }
@@ -95,6 +106,7 @@ export function pushFigureProject(figure, playFieldMap) {
       })
     }
   })
+
   return playFieldMap;
 }
 
