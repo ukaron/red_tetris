@@ -1,16 +1,18 @@
-import { SET_LANG } from "../constants/actions/common";
+import { LOG_IN, LOG_OUT } from "../constants/actions/common";
 
 const initialState = {
-  msg: '',
-  langv: 'ru',
+    name: '',
+    socket: {},
 }
 
-export const user = (state= initialState, action) => {
-  switch (action.type) {
-  case SET_LANG:
-    return {...state, langv: action.payload === "ru" ? "ru" : "eng"};
-  default:
-    return state;
+export const user = (state = initialState, action) => {
+    switch (action.type) {
+        case LOG_IN:
+            return action.payload;
+        case LOG_OUT:
+            return initialState;     
+        default:
+            return state;
   }
 }
 
