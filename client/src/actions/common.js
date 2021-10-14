@@ -4,12 +4,13 @@ export const setMsg = (msg) => ({
   type: SET_MSG,
   payload: msg
 });
+
 export const setLang = (lang) => ({
   type: SET_LANG,
   payload: lang
 });
 
-export const userLogIn = (name) =>({
+export const userLogIn = (data) =>({
     type: LOG_IN,
-    payload: name
+    payload: data
 });

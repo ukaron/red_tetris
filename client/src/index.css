@@ -15,6 +15,9 @@
     height: 60px;
     color: white;
     box-shadow: 0.2em 0.6em 10px rgba(27, 27, 27, 0.5);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 body {
@@ -36,8 +39,12 @@ body {
     margin-top: 5%;
 }
 
-.logo{
-    width: 200px;
+.header-link {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .btn {
@@ -46,3 +53,11 @@ body {
     font-size: 1.25rem;
 }
 
+.menu {
+    display: flex;
+    text-align: left;
+}
+
+.start-button {
+    margin-left: 10px;
+}

@@ -13,18 +13,20 @@ import Lobby from '../pages/Lobby';
 import Game from '../pages/Game';
 import Header from '../components/header';
 
-const App = ({ common }) => (
-  <div >
-    <Header/>
-    <Router>
-        <Switch>
-            <Route component={Welcome} exact path='/'/>
-            <Route component={Lobby} path='/lobby'/>
-            <Route component={Game} path='/game:room'/>
-        </Switch>
-    </Router>
-  </div>
-)
+const App = () => {
+    return(
+        <div >
+            <Header/>
+            <Router>
+                <Switch>
+                    <Route component={Welcome} exact path='/'/>
+                    <Route component={Lobby} path='/lobby'/>
+                    <Route component={Game} path='/game:room'/>
+                </Switch>
+            </Router>
+        </div>
+    );
+}
 
 const mapStateToProps = (state) => ({
 	common: CommonSelector(state),

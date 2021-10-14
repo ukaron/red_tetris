@@ -13,17 +13,31 @@ const Welcome = () => {
     const dispatch = useDispatch();
     const [name, setName] = useState('');
     const [socket, setSocket] = useState(null);
-
-    const logIn = () => {
-        if (name) {
-            dispatch(userLogIn(name));
-            socket?.emit('new user', name)
-            history.push('/lobby');
-        };
-    }
+    const [massage, setMassage] = useState('');
+    
     useEffect(() => {
         setSocket(io(ENDPOINT));
     }, []);
+
+    const logIn = () => {
+        if (name.trim().length) {
+            dispatch(userLogIn({ name, socket }));
+            socket?.emit('new user', name);
+        };
+    }
+
+    const onChangeUserName = (name) => {
+        setName(name);
+        setMassage('');
+    };
+
+    socket && socket?.on('push to the lobbies page', () => {
+        history.push('/lobby')
+    });
+
+    socket && socket?.on('massage', massage => {
+        setMassage(massage);
+    });
 
 	return (
         <Card style={{ width: '35rem' }} className='conteiner'>
@@ -33,9 +47,10 @@ const Welcome = () => {
                     placeholder="Username"
                     className='mt-4'
                     size="lg"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => onChangeUserName(e.target.value)}
                 />
                 <Button className='mt-4 mb-4 main-btn' size="lg" onClick={logIn}>PLAY</Button>
+                { massage && <Card.Title as="h5">{massage}</Card.Title> }
             </Card.Body>
         </Card>
 	);

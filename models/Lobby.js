@@ -14,7 +14,7 @@ class Lobby {
     };
 
     deleteUser(name) {
-        this.users = this.users.filter(user => user === name);
+        this.users = this.users.filter(user => user !== name);
     };
 
     start() {
