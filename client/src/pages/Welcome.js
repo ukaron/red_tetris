@@ -54,6 +54,7 @@ const Welcome = () => {
             </Card.Body>
         </Card>
 	);
+
 }
 
 const mapStateToProps = (state) => ({

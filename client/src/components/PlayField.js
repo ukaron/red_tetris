@@ -4,8 +4,15 @@ import { figures } from '../constants/figurines/figurines';
 import { getFiguresPull, getRandomInt } from '../utils/game/createPull';
 import { rotateFigure } from '../utils/game/rotateFigure';
 import { generateEmptyField, generateRandomField } from '../utils/game/generateField';
-import { figuresWithPosition, pushFigureOnFieldMap, renderField, renderFigure } from '../utils/game/fieldAndFigures';
+import {
+  defaultFigureStartPosition,
+  figuresWithPosition,
+  pushFigureOnFieldMap,
+  renderField,
+  renderFigure,
+} from '../utils/game/fieldAndFigures';
 import { figureStacked, moveDown, moveLeft, moveRight } from '../utils/game/moveFigure';
+import '../styles/PlayField/main.css';
 
 export function PlayField() {
   const playFieldSize = {
@@ -13,6 +20,7 @@ export function PlayField() {
     width: 10,
   };
 
+  const [moveLocked, setMoveLocked] = useState(true);
   const defaultBg = '#90e890';
   const figuresPullCount = 20;
   const figureMoveDownInterval = 1000;
@@ -25,10 +33,10 @@ export function PlayField() {
   const [currentFigure, setCurrentFigure] = useState(
     figuresWithPosition[getRandomInt(0, figuresWithPosition.length - 1)]
   );
-
   const pushFigureOnFieldMapHandler = (figure) => {
+    figure.location = defaultFigureStartPosition;
     setCurrentFigure(figure);
-    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap)]);
+    setFieldMap([...pushFigureOnFieldMap(figure, playFieldMap, defaultFigureStartPosition)]);
   };
   const figureTypesRendered = figureTypes.map(figure => renderFigure(figure, pushFigureOnFieldMapHandler));
 
@@ -46,37 +54,65 @@ export function PlayField() {
     return renderFigure(figure);
   });
 
-  const moveDownHandler = () => {
-    setFieldMap([...moveDown(playFieldMap, currentFigure.name)]);
-  }
-
   const figuresPullRendered = useState(figuresPullField);
 
+  const moveDownHandler = () => {
+    if (!moveLocked) {
+      setFieldMap([...moveDown(currentFigure, playFieldMap)]);
+    }
+  }
+
   const moveLeftHandler = () => {
-    setFieldMap([...moveLeft(playFieldMap)]);
+    if (!moveLocked)
+    console.log(currentFigure);
+    setFieldMap([...moveLeft(currentFigure, playFieldMap)]);
   }
 
   const moveRightHandler = () => {
-    setFieldMap([...moveRight(playFieldMap)]);
+    if (!moveLocked)
+      setFieldMap([...moveRight(currentFigure, playFieldMap)]);
   }
+
+  const moveUpHandler = () => {
+
+    setFieldMap([...rotateFigure(playFieldMap, currentFigure, setCurrentFigure)]);
+  }
+
+  useEffect(() => {
+    setFieldMap([...pushFigureOnFieldMap(currentFigure, playFieldMap, currentFigure.location)]);
+  }, [currentFigure]);
 
   useEffect(() => {
     setFieldRendered(renderField(playFieldMap, currentFigure.color))
   }, [playFieldMap, currentFigure.color]);
 
+  useEffect(() => {
+    window.addEventListener('figure-spawned', () => {
+      setMoveLocked(false);
+    });
+    window.addEventListener('figure-stuck', () => {
+      setMoveLocked(true);
+    })
+  }, [])
+
   const callbackKeys = (e) => {
-    switch (e.code) {
-    case 'ArrowDown':
-      return moveDownHandler();
-    case 'ArrowLeft':
-      return moveLeftHandler();
-    case 'ArrowRight':
-      return moveRightHandler();
-    case 'Space':
-      console.log('Space');
-      return;
-    default:
-      return;
+    e.preventDefault();
+    if (!moveLocked) {
+      switch (e.code) {
+        case 'ArrowDown':
+          return moveDownHandler();
+        case 'ArrowLeft':
+          return moveLeftHandler();
+        case 'ArrowRight':
+          return moveRightHandler();
+        case 'ArrowUp':
+          return moveUpHandler();
+        case 'Space':
+          console.log('Space');
+          return;
+        default:
+          return;
+      }
     }
   };
 
@@ -102,20 +138,15 @@ export function PlayField() {
         </div>
       </Container>
       <Container className={'align-items-center justify-content-center'} style={{ display: 'grid' }}>
-        <div className={'text-center my-3'}>
-          <Button onClick={rotateAllFigureTypesHandler} variant={'outline-warning'}>
-            Rotate All
-          </Button>
-        </div>
         <ButtonGroup>
           <Button onClick={moveLeftHandler}>
             Left
           </Button>
-          <Button onClick={moveRightHandler}>
-            Right
-          </Button>
           <Button onClick={moveDownHandler}>
             Down
+          </Button>
+          <Button onClick={moveRightHandler}>
+            Right
           </Button>
         </ButtonGroup>
         {figureTypesRendered}
